@@ -1,7 +1,7 @@
-﻿using ClassLibrary1;
+﻿using Demo.DataModel;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DeleteAPI_V6.Controllers
+namespace Demo.API.Controllers
 {
     [Route("students")]
     [ApiController]

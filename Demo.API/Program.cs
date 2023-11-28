@@ -1,7 +1,7 @@
 
-using ClassLibrary1;
+using Demo.DataModel;
 
-namespace DeleteAPI_V6
+namespace Demo.API
 {
     public class Program
     {

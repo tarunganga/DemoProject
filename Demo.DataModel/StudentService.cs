@@ -1,6 +1,6 @@
 ﻿
 
-namespace ClassLibrary1
+namespace Demo.DataModel
 {
     public class StudentService : IStudentService
     {

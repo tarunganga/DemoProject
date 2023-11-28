@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1
+﻿namespace Demo.DataModel
 {
     public interface IStudentService
     {
