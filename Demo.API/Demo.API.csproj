@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\Demo.DataModel.csproj" />
+    <ProjectReference Include="..\Demo.DataModel\Demo.DataModel.csproj" />
   </ItemGroup>
 
 </Project>
