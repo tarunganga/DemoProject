@@ -1,4 +1,7 @@
-﻿using Demo.DataModel;
+﻿using System.Text.Json;
+using Demo.Business;
+using Demo.Contracts.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.API.Controllers
@@ -12,6 +15,14 @@ namespace Demo.API.Controllers
         [HttpGet]
         public IActionResult GetAllStudents()
         {
+            var something = new JsonPatchDocument<StudentRequest>();
+            something.Replace(x => x.Name, "New Name");
+            something.Remove(x => x.Name);
+            something.Add(x => x.Name, "New Name");
+
+
+            string patches = JsonSerializer.Serialize(something.Operations);
+
             return Ok(studentService.GetAllStudents());
         }
 
@@ -41,11 +52,44 @@ namespace Demo.API.Controllers
             return NoContent();
         }
 
+        // Update Student - Put
+        [HttpPut("{id}")]
+        public IActionResult UpdateStudent(Guid id, StudentRequest student)
+        {
+            if (student == null || id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            studentService.UpdateStudent(id, student);
+
+            return NoContent();
+        }
+
+
+        // Update Student --  JSON Patch
+        [HttpPatch("{id}")]
+        public IActionResult UpdateStudent(Guid id, [FromBody]JsonPatchDocument<StudentRequest> patchDocument)
+        {
+            if (patchDocument == null || id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            var existingStudent = new StudentRequest();
+            patchDocument.ApplyTo(existingStudent);
+
+            studentService.UpdateStudent(id, existingStudent);
+
+            return NoContent();
+        }
+
+
         // Create Student
         [HttpPost]
-        public IActionResult CreateStudent(Student student)
+        public IActionResult CreateStudent(StudentRequest student)
         {
-            if (student == null || student.Id != Guid.Empty)
+            if (student == null)
             {
                 return BadRequest();
             }
@@ -55,22 +99,5 @@ namespace Demo.API.Controllers
             return StatusCode(201, new { id });
 
         }
-
-        // Update Student
-        [HttpPut]
-        public IActionResult UpdateStudent(Student student)
-        {
-            if (student == null || student.Id == Guid.Empty)
-            {
-                return BadRequest();
-            }
-
-            studentService.UpdateStudent(student);
-
-            return NoContent();
-        }
-
-
-        // Update Student --  JSON Patch
     }
 }

@@ -1,5 +1,6 @@
-
+using Demo.Business;
 using Demo.DataModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace Demo.API
 {
@@ -16,6 +17,11 @@ namespace Demo.API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<IStudentService, StudentService>();
+
+            builder.Services.AddDbContext<UniversityContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("UniversityDb"));
+            });
 
             var app = builder.Build();
 
